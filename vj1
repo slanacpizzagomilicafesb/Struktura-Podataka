@@ -1,0 +1,71 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX_BOD 100
+
+typedef struct _student {
+	char ime[50];
+	char prezime[50];
+	int bodovi;
+	double rel_bod;
+}student;
+
+int BrojanjeRedaka();
+int UcitavanjeIzDatoteke(student*);
+int Ispis(student*);
+
+int main()
+{
+	student* st = NULL;
+
+	st = (student*)malloc(BrojanjeRedaka() * sizeof(student));
+	printf("Retci: %d\n", BrojanjeRedaka());
+
+	UcitavanjeIzDatoteke(st);
+	Ispis(st);
+
+	system("pause");
+	return 0;
+}
+
+int BrojanjeRedaka()
+{
+	FILE* dat = NULL;
+	int brojac = 0;
+	char str[100] = { 0 };
+	dat = fopen("nice.txt", "r");
+	while (!feof(dat))
+	{
+		if (dat == NULL) return -1;
+		fgets(str, 100, dat);
+		brojac++;
+	}
+	fclose(dat);
+	return brojac;
+}
+
+int UcitavanjeIzDatoteke(student* st)
+{
+	int i = 0;
+	FILE* dat = NULL;
+	dat = fopen("nice.txt", "r");
+	while (!feof(dat))
+	{
+		if (dat == NULL) return -1;
+		fscanf(dat, "%s %s %d", st[i].ime, st[i].prezime, &st[i].bodovi);
+		st[i].rel_bod = (double)st[i].bodovi / MAX_BOD * 100;
+		i++;
+	}
+	fclose(dat);
+	return 0;
+}
+
+int Ispis(student* st)
+{
+	int i = 0;
+	for (i = 0; i <= BrojanjeRedaka(); i++)
+	{
+		printf("%s %s %d %lf", st[i].ime, st[i].prezime, st[i].bodovi, st[i].rel_bod);
+	}
+	return 0;
+}
