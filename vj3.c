@@ -98,13 +98,17 @@ int main()
 	UnosIspred(ime, prezime, godina, temp_ime, temp_prezime, temp_godina, &Head);
 
 	printf("Unesite ime datoteke u koju zelite ispisati listu: ");
+	printf("Unesi ime datoteke: ");
 	scanf("%s", ime_datoteke_za_ispis);
-	strcat(ime_datoteke_za_ispis, ".txt");
+	if (strrchr(ime_datoteke_za_ispis, '.') == NULL)
+		strcat(ime_datoteke_za_ispis, ".txt");
 	IspisUDatoteku(&Head, ime_datoteke_za_ispis);
 
 	printf("Unesite ime datoteke iz koje zelite unosit podatke u listu: ");
+	printf("Unesi ime datoteke: ");
 	scanf("%s", ime_datoteke_za_unos);
-	strcat(ime_datoteke_za_unos, ".txt");
+	if (strrchr(ime_datoteke_za_unos, '.') == NULL)
+		strcat(ime_datoteke_za_unos, ".txt");
 	UnosIzDatoteke(&Head, ime_datoteke_za_unos);
 
 	return 0;
