@@ -304,7 +304,7 @@ int UnosIzDatoteke(Pozicija P, const char* ime_datoteke)
 			fscanf(fp, "%s %s %d", q->ime_s, q->prezime_s, &q->g_rodenja);
 			q->next = P->next;
 			P->next = q;
-			q = (Pozicija)realloc(q, sizeof(struct osoba));
+			q = (Pozicija)malloc(sizeof(struct osoba));
 			if (q == NULL)
 			{
 				printf("GRENSKA!");
