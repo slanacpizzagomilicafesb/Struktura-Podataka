@@ -85,7 +85,7 @@ int UnosIzDatoteke(Pozicija P1, Pozicija P2, char* imeDatoteke)
 			q->next = P2->next;
 			P2->next = q;
 			P2 = temp2;
-			if(!feof(fp)) q = (Pozicija)realloc(q, sizeof(struct polinom));
+			if (!feof(fp)) q = (Pozicija)realloc(q, sizeof(struct polinom));
 		}
 		else if (q->eksponent > P2->next->eksponent)
 		{
@@ -102,7 +102,7 @@ int ZbrojPolinoma(Pozicija P1, Pozicija P2, Pozicija S)
 {
 	Pozicija q = NULL;
 	q = (Pozicija)malloc(sizeof(struct polinom));
-	if (q == NULL) return - 1;
+	if (q == NULL) return -1;
 
 	P1 = P1->next;
 	P2 = P2->next;
@@ -118,6 +118,7 @@ int ZbrojPolinoma(Pozicija P1, Pozicija P2, Pozicija S)
 			P1 = P1->next;
 			P2 = P2->next;
 			S = S->next;
+			q = (Pozicija)realloc(q, sizeof(struct polinom));
 		}
 		else if (P1->eksponent < P2->eksponent)
 		{
@@ -127,6 +128,7 @@ int ZbrojPolinoma(Pozicija P1, Pozicija P2, Pozicija S)
 			S->next = q;
 			P1 = P1->next;
 			S = S->next;
+			q = (Pozicija)realloc(q, sizeof(struct polinom));
 		}
 		else if (P2->eksponent < P1->eksponent)
 		{
@@ -136,6 +138,7 @@ int ZbrojPolinoma(Pozicija P1, Pozicija P2, Pozicija S)
 			S->next = q;
 			P2 = P2->next;
 			S = S->next;
+			q = (Pozicija)realloc(q, sizeof(struct polinom));
 		}
 	}
 
@@ -162,6 +165,7 @@ int UmnozakPolinoma(Pozicija P1, Pozicija P2, Pozicija U)
 			U = U->next;
 			P1 = P1->next;
 			P2 = P2->next;
+			q = (Pozicija)realloc(q, sizeof(struct polinom));
 		}
 		else if (P1->eksponent < P2->eksponent)
 		{
