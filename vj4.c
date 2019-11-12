@@ -107,8 +107,34 @@ int ZbrojPolinoma(Pozicija P1, Pozicija P2, Pozicija S)
 	P1 = P1->next;
 	P2 = P2->next;
 
-	while (P1 != NULL && P2 != NULL)
+	while (P1 != NULL || P2 != NULL)
 	{
+		if(P1==NULL)
+		{
+			while(P2!=NULL)
+			{
+				q->eksponent=P2->eksponent;
+				q->koeficijent=P2->koeficijent;
+				q->next=S->next;
+				S->next=q;
+				P2=P2->next;
+				q=(Pozicija)malloc(sizeof(struct polinom));
+			}
+			break;
+		}
+		else if(P2==NULL)
+		{
+			while(P1!=NULL)
+			{
+				q->eksponent=P1->eksponent;
+				q->koeficijent=P1->koeficijent;
+				q->next=S->next;
+				S->next=q;
+				P1=P1->next;
+				q=(Pozicija)malloc(sizeof(struct polinom));
+			}
+			break;
+		}
 		if (P1->eksponent == P2->eksponent)
 		{
 			q->eksponent = P1->eksponent;
