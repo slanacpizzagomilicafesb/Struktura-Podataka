@@ -29,6 +29,10 @@ int main()
 
 	fileName = (char*)malloc(MAX_STR_LEN * sizeof(char));
 	if (fileName == NULL) return -1;
+	printf("Unesi ime datoteke: ");
+	scanf("%s", fileName);
+	if (strrchr(fileName, '.') == NULL)
+		strcat(fileName, ".txt");
 
 	UnosIzDatoteke(&Head1, &Head2, fileName);
 	ZbrojPolinoma(&Head1, &Head2, &Suma);
