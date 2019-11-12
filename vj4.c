@@ -62,7 +62,7 @@ int UnosIzDatoteke(Pozicija P1, Pozicija P2, char* imeDatoteke)
 			q->next = P1->next;
 			P1->next = q;
 			P1 = temp1;
-			q = (Pozicija)realloc(q, sizeof(struct polinom));
+			q = (Pozicija)malloc(sizeof(struct polinom));
 		}
 		else if (q->eksponent > P1->next->eksponent)
 		{
@@ -85,7 +85,7 @@ int UnosIzDatoteke(Pozicija P1, Pozicija P2, char* imeDatoteke)
 			q->next = P2->next;
 			P2->next = q;
 			P2 = temp2;
-			if (!feof(fp)) q = (Pozicija)realloc(q, sizeof(struct polinom));
+			if (!feof(fp)) q = (Pozicija)malloc(sizeof(struct polinom));
 		}
 		else if (q->eksponent > P2->next->eksponent)
 		{
@@ -118,7 +118,7 @@ int ZbrojPolinoma(Pozicija P1, Pozicija P2, Pozicija S)
 			P1 = P1->next;
 			P2 = P2->next;
 			S = S->next;
-			q = (Pozicija)realloc(q, sizeof(struct polinom));
+			q = (Pozicija)malloc(sizeof(struct polinom));
 		}
 		else if (P1->eksponent < P2->eksponent)
 		{
@@ -128,7 +128,7 @@ int ZbrojPolinoma(Pozicija P1, Pozicija P2, Pozicija S)
 			S->next = q;
 			P1 = P1->next;
 			S = S->next;
-			q = (Pozicija)realloc(q, sizeof(struct polinom));
+			q = (Pozicija)malloc(sizeof(struct polinom));
 		}
 		else if (P2->eksponent < P1->eksponent)
 		{
@@ -138,14 +138,14 @@ int ZbrojPolinoma(Pozicija P1, Pozicija P2, Pozicija S)
 			S->next = q;
 			P2 = P2->next;
 			S = S->next;
-			q = (Pozicija)realloc(q, sizeof(struct polinom));
+			q = (Pozicija)malloc(sizeof(struct polinom));
 		}
 	}
 
 	return 0;
 }
 
-int UmnozakPolinoma(Pozicija P1, Pozicija P2, Pozicija U)
+/*int UmnozakPolinoma(Pozicija P1, Pozicija P2, Pozicija U)
 {
 	Pozicija q = NULL;
 	q = (Pozicija)malloc(sizeof(struct polinom));
@@ -165,7 +165,7 @@ int UmnozakPolinoma(Pozicija P1, Pozicija P2, Pozicija U)
 			U = U->next;
 			P1 = P1->next;
 			P2 = P2->next;
-			q = (Pozicija)realloc(q, sizeof(struct polinom));
+			q = (Pozicija)malloc(sizeof(struct polinom));
 		}
 		else if (P1->eksponent < P2->eksponent)
 		{
@@ -178,4 +178,4 @@ int UmnozakPolinoma(Pozicija P1, Pozicija P2, Pozicija U)
 	}
 
 	return 0;
-}
+}*/
