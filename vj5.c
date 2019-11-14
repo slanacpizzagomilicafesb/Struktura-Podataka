@@ -56,7 +56,7 @@ int UnosIzDatoteke(Pozicija P1, Pozicija P2, char* imeDatoteke)
 		{
 			fscanf(fp, "%d%c", &q->broj, &smece);
 		}
-		if (P1->next == NULL || (q->broj <= P1->next->broj))
+		if (P1->next == NULL || (q->broj < P1->next->broj))
 		{
 			q->next = P1->next;
 			P1->next = q;
@@ -66,6 +66,10 @@ int UnosIzDatoteke(Pozicija P1, Pozicija P2, char* imeDatoteke)
 		else if (q->broj > P1->next->broj)
 		{
 			P1 = P1->next;
+		}
+		else if (q->broj == P1->next->broj)
+		{
+			P1 = temp1;
 		}
 	}
 
@@ -85,6 +89,10 @@ int UnosIzDatoteke(Pozicija P1, Pozicija P2, char* imeDatoteke)
 		else if (q->broj > P2->next->broj)
 		{
 			P2 = P2->next;
+		}
+		else if (q->broj == P2->next->broj)
+		{
+			P2 = temp2;
 		}
 	}
 
