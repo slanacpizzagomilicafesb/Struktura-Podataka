@@ -66,22 +66,24 @@ int PopS(Pozicija p)
 int UnosIzDat(Pozicija p, char *fileName)
 {
 	FILE *fp = NULL;
-	char str[20] = { 0 };
-	int x = 0, y = 0;
+	char* str = NULL;
+	int x = 0, y = 0, br = 0, numB = 0;
+	str = (char*)malloc(MAX_STR_LEN * sizeof(char));
 	fp = fopen(fileName, "r");
+	fgets(str, MAX_STR_LEN, fp);
 	while (!feof(fp))
 	{
-		fscanf(fp, " %s", str);
-		if (str[0] >= '0' && str[0] <= '9')
+		sscanf(str, " %d %n", &br, &numB);
+		if (sscanf == 1)
 		{
-			x = atoi(str);
 			Push(x, p);
+			str += numB;
 		}
 		else
 		{
 			x = PopS(p);
 			y = PopS(p);
-			switch (str[0])
+			switch (*str)
 			{
 			case '+':
 				Push(y + x, p);
@@ -93,6 +95,7 @@ int UnosIzDat(Pozicija p, char *fileName)
 				Push(y - x, p);
 				break;
 			}
+			str++;
 		}
 	}
 	return 0;
