@@ -43,7 +43,7 @@ int main()
 	provjera = UnosIzDat(&head, fileName);
 	rez = PopS(&head);
 
-	printf("%lf", rez);
+	printf("%f\n", rez);
 
 	return 0;
 }
@@ -56,6 +56,8 @@ int Push(float Rbroj, Pozicija p)
 	q->broj = Rbroj;
 	q->next = p->next;
 	p->next = q;
+
+	printf("%f\n", q->broj);
 
 	return 0;
 }
@@ -89,19 +91,19 @@ int UnosIzDat(Pozicija p, const char *fName)
 	str = (char*)malloc(MAX_STR_LEN * sizeof(char));
 	fp = fopen(fName, "r");
 	fgets(str, MAX_STR_LEN, fp);
-	printf("%s ", str);
-	while ((*str) != '\n')
+	printf("%s\n", str);
+	while ((*str) != '\0')
 	{
-		if (sscanf(str, " %f%n", &br, &numB) == 2)
+		if (sscanf(str, " %f%n", &br, &numB) == 1)
 		{
 			Push(br, p);
 			str += numB;
 		}
-		else if (sscanf(str, " %f%n", &br, &numB) == 1)
+		else if (sscanf(str, " %f%n", &br, &numB) == 0)
 		{
 			x = PopS(p);
 			y = PopS(p);
-			str += 2;
+			str++;
 			switch (*str)
 			{
 			case '+':
@@ -118,12 +120,13 @@ int UnosIzDat(Pozicija p, const char *fName)
 					Push(y / x, p);
 				break;
 			default:
-				printf("GRESKA! \n");
+				printf("GRESKA pri citanju! \n");
+				return 1;
 				break;
 			}
+			str++;
 		}
 	}
-	printf("%f\n", PopS(p));
 	fclose(fp);
 	return 0;
 }
