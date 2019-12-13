@@ -1,91 +1,111 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include<stdio.h>
 #include<stdlib.h>
+#include<math.h>
 #include<string.h>
-#define MAX_BOD 100
-#define MAX_STRLEN 100
+#include<time.h>
+#define MAX_STR_LEN 100
 
-struct _student;
-typedef struct _student* pstud;
-typedef struct _student _STUDENT;
+struct lista;
+typedef struct lista * Pozicija;
 
-struct _student {
-	char ime[50];
-	char prezime[50];
-	int bodovi;
-	double rel_bod;
+struct lista {
+	double broj;
+	Pozicija next;
 };
-
-int BrojanjeRedaka(char*);
-int UcitavanjeIzDatoteke(pstud, char*);
-int Ispis(pstud, char*, int);
-
+int Push(double, Pozicija);
+double PopS(Pozicija);
+//int PopR(Pozicija);
+int UnosIzDat(Pozicija, char*);
 int main()
 {
-	pstud st = NULL;
-	char *ime_datoteke_za_unos = NULL;
-	int brojRedaka = 0;
+	char *fileName = NULL;
+	double rez = 0;
+	struct lista head;
+	head.next = NULL;
+	fileName = (char*)malloc(MAX_STR_LEN * sizeof(char));
+	memset(fileName, '\0', MAX_STR_LEN);
 
-	ime_datoteke_za_unos = (char*)malloc(MAX_STRLEN * sizeof(char));
-	if (ime_datoteke_za_unos == NULL) return -1;
+	printf("Unesi ime filea: ");
+	scanf("%s", fileName);
 
-	brojRedaka = BrojanjeRedaka(ime_datoteke_za_unos);
+	if (strrchr(fileName, '.') == NULL)
+		strcat(fileName, ".txt");
 
-	printf("Unesite ime datoteke za unos: ");
-	scanf("%s", ime_datoteke_za_unos);
-	if (strrchr(ime_datoteke_za_unos, '.') == NULL)
-		strcat(ime_datoteke_za_unos, ".txt");
+	UnosIzDat(&head, fileName);
+	rez = PopS(&head);
 
-	st = (pstud)malloc(brojRedaka * sizeof(_STUDENT));
-	if (st = NULL) return -1;
-
-	printf("Retci: %d\n", brojRedaka);
-
-	UcitavanjeIzDatoteke(st, ime_datoteke_za_unos);
-	Ispis(st, ime_datoteke_za_unos, brojRedaka);
-
-	system("pause");
 	return 0;
 }
-
-int BrojanjeRedaka(char* ime_datoteke)
+int Push(double Rbroj, Pozicija p)
 {
-	FILE* dat = NULL;
-	int brojac = 0;
-	char str[100] = { 0 };
-	dat = fopen(ime_datoteke, "r");
-	if (dat == NULL) return -1;
-	while (!feof(dat))
-	{
-		fgets(str, 100, dat);
-		brojac++;
-	}
-	fclose(dat);
-	return brojac;
-}
+	Pozicija q = NULL;
+	q = (Pozicija)malloc(sizeof(struct lista));
+	if (q == NULL)
+		return -1;
+	q->broj = Rbroj;
+	q->next = p->next;
+	p->next = q;
 
-int UcitavanjeIzDatoteke(pstud st, char* ime_datoteke)
-{
-	FILE* dat = NULL;
-	dat = fopen(ime_datoteke, "r");
-	if (dat == NULL) return -1;
-	while (!feof(dat))
-	{
-		fscanf(dat, "%s %s %d", st->ime, st->prezime, &st->bodovi);
-		st->rel_bod = (double)st->bodovi / MAX_BOD * 100;
-		st++;
-	}
-	fclose(dat);
 	return 0;
 }
-
-int Ispis(pstud st, char* ime_datoteke, int brojRedova)
+double PopS(Pozicija p)
 {
-	int i = 0;
-	for (i = 0; i <= brojRedova; i++)
+	double broj = 0;
+	Pozicija temp = p->next;
+	broj = p->next->broj;
+	p->next = temp->next;
+	free(temp);
+	return broj;
+}
+/*int PopR(Pozicija p)
+{
+int broj = 0;
+Pozicija temp = NULL;
+while (p->next->next != NULL)
+p = p->next;
+temp = p->next;
+broj = p->next->broj;
+p->next = temp->next;
+free(temp);
+return broj;
+}*/
+int UnosIzDat(Pozicija p, char *fName)
+{
+	FILE *fp = NULL;
+	char* str = NULL;
+	double x = 0, y = 0, br = 0;
+	int numB = 0;
+	str = (char*)malloc(MAX_STR_LEN * sizeof(char));
+	fp = fopen(fName, "r");
+	fgets(str, MAX_STR_LEN, fp);
+	while (!feof(fp))
 	{
-		printf("%s %s %d %lf", st->ime, st->prezime, st->bodovi, st->rel_bod);
-		st++;
+		sscanf(str, " %lf %n", &br, &numB);
+		if (sscanf)
+		{
+			Push(x, p);
+			str += numB;
+		}
+		else
+		{
+			x = PopS(p);
+			y = PopS(p);
+			switch (*str)
+			{
+			case '+':
+				Push(y + x, p);
+				break;
+			case '*':
+				Push(y * x, p);
+				break;
+			case '-':
+				Push(y - x, p);
+				break;
+			}
+			str++;
+		}
 	}
+	fclose(fp);
 	return 0;
 }
