@@ -10,27 +10,34 @@ struct lista;
 typedef struct lista * Pozicija;
 
 struct lista {
-	int broj;
+	double broj;
 	Pozicija next;
 };
-int Push(int, Pozicija);
-int PopS(Pozicija);
+int Push(double, Pozicija);
+double PopS(Pozicija);
 //int PopR(Pozicija);
 int UnosIzDat(Pozicija, char*);
 int main()
 {
 	char *fileName = NULL;
-	int rez = 0;
+	double rez = 0;
 	struct lista head;
 	head.next = NULL;
 	fileName = (char*)malloc(MAX_STR_LEN * sizeof(char));
+	memset(fileName, '\0', MAX_STR_LEN);
+
+	printf("Unesi ime filea: ");
+	scanf("%s", fileName);
+
+	if (strrchr(fileName, '.') == NULL)
+		strcat(fileName, ".txt");
 
 	UnosIzDat(&head, fileName);
 	rez = PopS(&head);
 
 	return 0;
 }
-int Push(int Rbroj, Pozicija p)
+int Push(double Rbroj, Pozicija p)
 {
 	Pozicija q = NULL;
 	q = (Pozicija)malloc(sizeof(struct lista));
@@ -42,9 +49,9 @@ int Push(int Rbroj, Pozicija p)
 
 	return 0;
 }
-int PopS(Pozicija p)
+double PopS(Pozicija p)
 {
-	int broj = 0;
+	double broj = 0;
 	Pozicija temp = p->next;
 	broj = p->next->broj;
 	p->next = temp->next;
@@ -53,28 +60,29 @@ int PopS(Pozicija p)
 }
 /*int PopR(Pozicija p)
 {
-	int broj = 0;
-	Pozicija temp = NULL;
-	while (p->next->next != NULL)
-		p = p->next;
-	temp = p->next;
-	broj = p->next->broj;
-	p->next = temp->next;
-	free(temp);
-	return broj;
+int broj = 0;
+Pozicija temp = NULL;
+while (p->next->next != NULL)
+p = p->next;
+temp = p->next;
+broj = p->next->broj;
+p->next = temp->next;
+free(temp);
+return broj;
 }*/
-int UnosIzDat(Pozicija p, char *fileName)
+int UnosIzDat(Pozicija p, char *fName)
 {
 	FILE *fp = NULL;
 	char* str = NULL;
-	int x = 0, y = 0, br = 0, numB = 0;
+	double x = 0, y = 0, br = 0;
+	int numB = 0;
 	str = (char*)malloc(MAX_STR_LEN * sizeof(char));
-	fp = fopen(fileName, "r");
+	fp = fopen(fName, "r");
 	fgets(str, MAX_STR_LEN, fp);
 	while (!feof(fp))
 	{
-		sscanf(str, " %d %n", &br, &numB);
-		if (sscanf == 1)
+		sscanf(str, " %lf %n", &br, &numB);
+		if (sscanf)
 		{
 			Push(x, p);
 			str += numB;
@@ -98,5 +106,6 @@ int UnosIzDat(Pozicija p, char *fileName)
 			str++;
 		}
 	}
+	fclose(fp);
 	return 0;
 }
