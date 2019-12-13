@@ -10,20 +10,28 @@ struct lista;
 typedef struct lista * Pozicija;
 
 struct lista {
-	double broj;
+	float broj;
 	Pozicija next;
 };
-int Push(double, Pozicija);
-double PopS(Pozicija);
+int Push(float, Pozicija);
+float PopS(Pozicija);
 //int PopR(Pozicija);
-int UnosIzDat(Pozicija, char*);
+int UnosIzDat(Pozicija, const char*);
 int main()
 {
 	char *fileName = NULL;
-	double rez = 0;
+	int provjera = 0;
+	float rez = 0;
 	struct lista head;
 	head.next = NULL;
 	fileName = (char*)malloc(MAX_STR_LEN * sizeof(char));
+
+	if (fileName == NULL)
+	{
+		printf("GRESKA pri alokaciji fileNamea! \n");
+		return -1;
+	}
+
 	memset(fileName, '\0', MAX_STR_LEN);
 
 	printf("Unesi ime filea: ");
@@ -32,12 +40,14 @@ int main()
 	if (strrchr(fileName, '.') == NULL)
 		strcat(fileName, ".txt");
 
-	UnosIzDat(&head, fileName);
+	provjera = UnosIzDat(&head, fileName);
 	rez = PopS(&head);
+
+	printf("%lf", rez);
 
 	return 0;
 }
-int Push(double Rbroj, Pozicija p)
+int Push(float Rbroj, Pozicija p)
 {
 	Pozicija q = NULL;
 	q = (Pozicija)malloc(sizeof(struct lista));
@@ -49,9 +59,9 @@ int Push(double Rbroj, Pozicija p)
 
 	return 0;
 }
-double PopS(Pozicija p)
+float PopS(Pozicija p)
 {
-	double broj = 0;
+	float broj = 0;
 	Pozicija temp = p->next;
 	broj = p->next->broj;
 	p->next = temp->next;
@@ -70,27 +80,28 @@ p->next = temp->next;
 free(temp);
 return broj;
 }*/
-int UnosIzDat(Pozicija p, char *fName)
+int UnosIzDat(Pozicija p, const char *fName)
 {
 	FILE *fp = NULL;
 	char* str = NULL;
-	double x = 0, y = 0, br = 0;
+	float x = 0, y = 0, br = 0;
 	int numB = 0;
 	str = (char*)malloc(MAX_STR_LEN * sizeof(char));
 	fp = fopen(fName, "r");
 	fgets(str, MAX_STR_LEN, fp);
-	while (!feof(fp))
+	printf("%s ", str);
+	while ((*str) != '\n')
 	{
-		sscanf(str, " %lf %n", &br, &numB);
-		if (sscanf)
+		if (sscanf(str, " %f%n", &br, &numB) == 2)
 		{
-			Push(x, p);
+			Push(br, p);
 			str += numB;
 		}
-		else
+		else if (sscanf(str, " %f%n", &br, &numB) == 1)
 		{
 			x = PopS(p);
 			y = PopS(p);
+			str += 2;
 			switch (*str)
 			{
 			case '+':
@@ -102,13 +113,17 @@ int UnosIzDat(Pozicija p, char *fName)
 			case '-':
 				Push(y - x, p);
 				break;
-			default: 
-				printf("GRESKA");
+			case '/':
+				if (x != 0)
+					Push(y / x, p);
+				break;
+			default:
+				printf("GRESKA! \n");
 				break;
 			}
-			str++;
 		}
 	}
+	printf("%f\n", PopS(p));
 	fclose(fp);
 	return 0;
 }
