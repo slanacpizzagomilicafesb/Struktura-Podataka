@@ -102,6 +102,9 @@ int UnosIzDat(Pozicija p, char *fName)
 			case '-':
 				Push(y - x, p);
 				break;
+			default: 
+				printf("GRESKA");
+				break;
 			}
 			str++;
 		}
