@@ -45,7 +45,6 @@ int main()
 	Head1.next = NULL;
 	Head2.child = NULL;
 	Head2.sibling = NULL;
-	Push(&Head2, &Head1);
 
 	printf("Odaberite jednu od opcija (od 1 do 5):\n1.md \n2.cd dir \n3.cd.. \n4.dir \n5.izlaz \n");
 	
@@ -58,31 +57,34 @@ int main()
 		case 1:
 			printf("Unesite ime direktorija kojeg zelite napravit: ");
 			scanf("%s", ime);
-			printR(&Head1);
+			printR(Head1.next);
 			printf("%s: md %s\n", ptr->Name, ime);
 			md(ptr, ime);
 			break;
 		case 2:
 			printf("Unesite ime direktorija kojem zelite pristupiti: ");
 			scanf("%s", ime);
-			printR(&Head1);
+			printR(Head1.next);
 			printf("%s: cd dir %s\n", ptr->Name, ime);
 			ptr = cd_dir(ptr, &Head1, ime);
 			break;
 		case 3:
-			printR(&Head1);
+			printR(Head1.next);
 			printf("%s: cd..\n", ptr->Name);
 			ptr = cd(&Head1);
 			break;
 		case 4:
-			printR(&Head1);
+			printR(Head1.next);
 			printf("%s: dir\n", ptr->Name);
 			dir(ptr);
 			break;
 		case 5:
-			printR(&Head1);
+			printR(Head1.next);
 			printf("%s: izlaz\n", ptr->Name);
 			i = false;
+		default:
+			printf("Greska pri unosu!");
+			break;
 		}
 	}
 
