@@ -152,8 +152,9 @@ int md(Family current, char* newName)
 {
 	Family q = NULL;
 
-	if (strcmp(newName, current->child->Name) < 0)
+	if ((strcmp(newName, current->child->Name) < 0) || (current->child == NULL))
 	{
+		printf("nesto");
 		q = (Family)malloc(sizeof(struct direc));
 		if (q == NULL)
 		{
