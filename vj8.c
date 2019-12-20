@@ -13,7 +13,7 @@ typedef struct direc * Family;
 struct direc {
 	Family sibling;
 	Family child;
-	char * Name;
+	char* Name;
 };
 
 struct list;
@@ -151,10 +151,10 @@ int dir(Family current)
 int md(Family current, char* newName)
 {
 	Family q = NULL;
-
-	if ((strcmp(newName, current->child->Name) < 0) || (current->child == NULL))
+	
+	if ((current->child == NULL) || (strcmp(newName, current->child->Name) < 0))
 	{
-		printf("nesto");
+		
 		q = (Family)malloc(sizeof(struct direc));
 		if (q == NULL)
 		{
@@ -165,6 +165,7 @@ int md(Family current, char* newName)
 		current->child = q;
 		q->child = NULL;
 		strcat(q->Name, newName);
+
 		return 0;
 	}
 
@@ -212,6 +213,5 @@ void printR(Position stog)
 {
 	if (!stog) return;
 	printR(stog->next);
-	Family ispis = stog->adress;
-	printf("%s\\", ispis->Name);
+	printf("%s\\", stog->adress->Name);
 }
