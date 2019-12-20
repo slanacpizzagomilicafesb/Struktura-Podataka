@@ -93,10 +93,16 @@ int main()
 
 int Unos(Family current, Family newElement, char* newName)
 {
+	newElement->Name = (char*)malloc(MAX_STR_LEN * sizeof(char));
+	if (newElement->Name == NULL)
+	{
+		printf("Greska pri alokaciji memorije imena!");
+		return -2;
+	}
 	newElement->sibling = current->sibling;
 	current->sibling = newElement;
 	newElement->child = NULL;
-	strcat(newElement->Name, newName);
+	strcpy(newElement->Name, newName);
 	return 0;
 }
 
@@ -127,11 +133,11 @@ Family cd_dir(Family current, Position stog, char* name)
 	Family temp = current;
 	Push(current, stog);
 	current = current->child;
-	while (current && name != current->Name)
+	while ((current != NULL) && (name != current->Name))
 		current = current->sibling;
 	if (current == NULL)
 	{
-		printf("Nema tog elementa.");
+		printf("Nema tog direktorija.\n");
 		return temp;
 	}
 	return current;
@@ -158,22 +164,29 @@ int md(Family current, char* newName)
 		q = (Family)malloc(sizeof(struct direc));
 		if (q == NULL)
 		{
-			printf("Greska pri alokaciji memorije!");
+			printf("Greska pri alokaciji memorije objekta!");
 			return -1;
 		}
+
+		q->Name = (char*)malloc(MAX_STR_LEN * sizeof(char));
+		if (q->Name == NULL)
+		{
+			printf("Greska pri alokaciji memorije imena!");
+			return -2;
+		}
+
 		q->sibling = current->child;
 		current->child = q;
 		q->child = NULL;
-		strcat(q->Name, newName);
-
+		strcpy(q->Name, newName);
 		return 0;
 	}
 
-	current = current->child;
-	current = current->sibling;
+	current = current->child->sibling;
 
 	while (current->sibling != NULL)
 	{
+		printf("nesto");
 		if (strcmp(newName, current->sibling->Name) == 0)
 		{
 			printf("Ne mozes unit direktorij istog imena.");
@@ -184,7 +197,7 @@ int md(Family current, char* newName)
 			q = (Family)malloc(sizeof(struct direc));
 			if (q == NULL)
 			{
-				printf("Greska pri alokaciji memorije!");
+				printf("Greska pri alokaciji memorije objekta!");
 				return -1;
 			}
 			Unos(current, q, newName);
@@ -200,6 +213,7 @@ int md(Family current, char* newName)
 		return -1;
 	}
 	Unos(current, q, newName);
+
 	return 0;
 }
 
@@ -211,7 +225,7 @@ Family cd(Position stog)
 
 void printR(Position stog)
 {
-	if (!stog) return;
+	if (stog == NULL) return;
 	printR(stog->next);
 	printf("%s\\", stog->adress->Name);
 }
