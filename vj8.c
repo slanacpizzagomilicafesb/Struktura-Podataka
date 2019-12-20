@@ -182,7 +182,7 @@ int md(Family current, char* newName)
 		return 0;
 	}
 
-	current = current->child->sibling;
+	current = current->child;
 
 	while (current->sibling != NULL)
 	{
