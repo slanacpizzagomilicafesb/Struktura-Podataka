@@ -19,9 +19,22 @@ Pos ispis(Pos);
 Pos brisi(Pos, int);
 Pos trazi(Pos, int);
 Pos traziMin(Pos);
+
 int main()
 {
-
+	Pos s;
+	struct binTree stablo;
+	stablo.right = NULL;
+	stablo.left = NULL;
+	int i = 0;
+	srand(time(NULL));
+	for (i = 0; i < 50; i++)
+	{
+		unos(&stablo, rand() % 100 + 1);
+	}
+	ispis(&stablo);
+	s = trazi(&stablo, 5);
+	printf("%d ", s->Num);
 	return 0;
 }
 Pos unos(Pos p, int br)
@@ -43,7 +56,7 @@ Pos ispis(Pos p)
 {
 	if (p != NULL)
 	{
-		printf("%d ", p->Num);
+		printf("%d\n", p->Num);
 		ispis(p->left);
 		ispis(p->right);
 	}
@@ -81,7 +94,7 @@ Pos brisi(Pos p, int br)
 	{
 		temp = traziMin(p->right);
 		p->Num = temp->Num;
-		p->right = brisi(p->right, p->right);
+		p->right = brisi(p->right, p->Num);
 	}
 	else
 	{
