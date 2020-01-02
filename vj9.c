@@ -18,6 +18,7 @@ Pos unos(Pos, int);
 Pos ispis(Pos);
 Pos brisi(Pos, int);
 Pos trazi(Pos, int);
+Pos traziMin(Pos);
 int main()
 {
 
@@ -50,6 +51,46 @@ Pos ispis(Pos p)
 }
 Pos trazi(Pos p, int br)
 {
-	if(p=)
+	if (p = NULL)
+		return NULL;
+	else if (br < p->Num)
+		return trazi(p->left, br);
+	else if (br > p->Num)
+		return trazi(p->right, br);
+	else
+		return p;
 }
-Pos brisi(Pos p,int br)
+Pos traziMin(Pos p)
+{
+	if (p->left == NULL)
+		return p;
+	else if (p->left != NULL)
+		return traziMin(p->left);
+}
+Pos brisi(Pos p, int br)
+{
+	Pos temp = NULL;
+	temp = (Pos)malloc(sizeof(struct binTree));
+	if (p == NULL)
+		printf("Nema ga!");
+	else if (br < p->Num)
+		p->left = brisi(p->left, br);
+	else if (br > p->Num)
+		p->right = brisi(p->right, br);
+	else if (p->left != NULL && p->right != NULL)
+	{
+		temp = traziMin(p->right);
+		p->Num = temp->Num;
+		p->right = brisi(p->right, p->right);
+	}
+	else
+	{
+		temp = p;
+		if (p->left == NULL)
+			p = p->right;
+		else
+			p = p->left;
+		free(temp);
+	}
+	return p;
+}
