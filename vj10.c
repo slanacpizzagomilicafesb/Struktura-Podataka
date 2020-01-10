@@ -162,7 +162,7 @@ Pos IspisUDat(Pos P, const char* fName)
 	if (P != NULL)
 	{
 		IspisUDat(P->L, fName);
-		if (isdigit(P->broj))
+		if (isdigit((int)P->broj))
 			fprintf(fp, " %f", P->broj);
 		else
 			fprintf(fp, " %c", P->znak);
