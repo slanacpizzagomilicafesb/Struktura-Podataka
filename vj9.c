@@ -22,16 +22,14 @@ Pos traziMin(Pos);
 
 int main()
 {
-	struct binTree stablo;
-	stablo.right = NULL;
-	stablo.left = NULL;
+	Pos stablo = NULL;
 	int i = 0;
 	srand(time(NULL));
 	for (i = 0; i < 50; i++)
 	{
-		unos(&stablo, rand() % 100 + 1);
+		stablo = unos(stablo, rand() % 100 + 1);
 	}
-	ispis(&stablo);
+	ispis(stablo);
 
 	return 0;
 }
