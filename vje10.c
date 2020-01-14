@@ -25,21 +25,21 @@ struct lista {
 	Pozicija next;
 };
 
-
-
 int Push(Pos, Pozicija);
 Pos PopS(Pozicija);
 int UnosIzDat(Pozicija, const char*);
-Pos IspisUDat(Pos, const char*);
+Pos IspisUString(Pos, const char*, char*);
 
 int main()
 {
-	char *fileName = NULL;
+	char *fileName = NULL, *noviStr = NULL;
 	int provjera = 0;
 	float rez = 0;
+	FILE* fp = NULL;
 	Pos stablo = NULL;
 	struct lista head;
 	head.next = NULL;
+
 	fileName = (char*)malloc(MAX_STR_LEN * sizeof(char));
 
 	if (fileName == NULL)
@@ -58,7 +58,20 @@ int main()
 
 	provjera = UnosIzDat(&head, fileName);
 
-	IspisUDat(PopS(&head), fileName);
+	noviStr = (char*)malloc(MAX_STR_LEN * sizeof(char));
+
+	if (noviStr == NULL)
+	{
+		printf("GRESKA pri alokaciji noviStr! \n");
+		return -1;
+	}
+
+	stablo = PopS(&head);
+	IspisUString(stablo, fileName, noviStr);
+
+	fp = fopen(fileName, "w");
+	fprintf(fp, "\n %s", noviStr);
+	fclose(fp);
 
 	return 0;
 }
@@ -116,6 +129,7 @@ int UnosIzDat(Pozicija p, const char *fName)
 			case '+':
 				q = (Pos)malloc(sizeof(struct binTree));
 				q->znak = '+';
+				q->broj = 0;
 				q->L = y;
 				q->R = x;
 				Push(q, p);
@@ -123,6 +137,7 @@ int UnosIzDat(Pozicija p, const char *fName)
 			case '*':
 				q = (Pos)malloc(sizeof(struct binTree));
 				q->znak = '*';
+				q->broj = 0;
 				q->L = y;
 				q->R = x;
 				Push(q, p);
@@ -130,6 +145,7 @@ int UnosIzDat(Pozicija p, const char *fName)
 			case '-':
 				q = (Pos)malloc(sizeof(struct binTree));
 				q->znak = '-';
+				q->broj = 0;
 				q->L = y;
 				q->R = x;
 				Push(q, p);
@@ -139,6 +155,7 @@ int UnosIzDat(Pozicija p, const char *fName)
 				{
 					q = (Pos)malloc(sizeof(struct binTree));
 					q->znak = '/';
+					q->broj = 0;
 					q->L = y;
 					q->R = x;
 					Push(q, p);
@@ -158,22 +175,20 @@ int UnosIzDat(Pozicija p, const char *fName)
 	return 0;
 }
 
-Pos IspisUDat(Pos P, const char* fName)
+Pos IspisUString(Pos P, const char* fName, char* str)
 {
-	FILE* fp = NULL;
-	fp = fopen(fName, "w");
+	
 	if (P != NULL)
 	{
-		fprintf(fp, "(");
-		IspisUDat(P->L, fName);
-		if (isdigit((int)P->broj))
-			fprintf(fp, " %f", P->broj);
+		strcat(str, "(");
+		IspisUString(P->L, fName, str);
+		if (P->broj != 0)
+			sprintf(str + strlen(str), "%f", P->broj);
 		else
-			fprintf(fp, " %c", P->znak);
-		IspisUDat(P->R, fName);
-		fprintf(fp, ")");
+			strcat(str, (char*)P->znak);
+		IspisUString(P->R, fName, str);
+		strcat(str, ")");
 	}
-	fclose(fp);
 
 	return NULL;
 }
