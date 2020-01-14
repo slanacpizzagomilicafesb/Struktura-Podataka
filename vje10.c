@@ -37,6 +37,7 @@ int main()
 	char *fileName = NULL;
 	int provjera = 0;
 	float rez = 0;
+	Pos stablo = NULL;
 	struct lista head;
 	head.next = NULL;
 	fileName = (char*)malloc(MAX_STR_LEN * sizeof(char));
@@ -142,6 +143,8 @@ int UnosIzDat(Pozicija p, const char *fName)
 					q->R = x;
 					Push(q, p);
 				}
+				else
+					return 1;
 				break;
 			default:
 				printf("GRESKA pri citanju! \n");
@@ -161,12 +164,14 @@ Pos IspisUDat(Pos P, const char* fName)
 	fp = fopen(fName, "w");
 	if (P != NULL)
 	{
+		fprintf(fp, "(");
 		IspisUDat(P->L, fName);
 		if (isdigit((int)P->broj))
 			fprintf(fp, " %f", P->broj);
 		else
 			fprintf(fp, " %c", P->znak);
 		IspisUDat(P->R, fName);
+		fprintf(fp, ")");
 	}
 	fclose(fp);
 
