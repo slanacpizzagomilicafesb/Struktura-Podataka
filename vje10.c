@@ -183,7 +183,7 @@ Pos IspisUString(Pos P, const char* fName, char* str)
 		strcat(str, "(");
 		IspisUString(P->L, fName, str);
 		if (P->broj != 0)
-			sprintf(str + strlen(str), "%f", P->broj);
+			str += sprintf(str, "%f", P->broj);
 		else
 			strcat(str, (char*)P->znak);
 		IspisUString(P->R, fName, str);
