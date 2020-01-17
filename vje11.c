@@ -182,7 +182,7 @@ int Ispis(hashTab Tab)
 	{
 		temp = Tab->hashListe[i];
 		printf("Kljuc: %d\n", i);
-		while (temp != NULL)
+		for (temp; temp != NULL; temp = temp->next)
 		{
 			printf("\tIme: %s\n", temp->Ime);
 			printf("\tPrezime: %s\n", temp->prezime);
@@ -190,7 +190,7 @@ int Ispis(hashTab Tab)
 			scanf("%d", &matBr);
 			if (matBr == 1)
 				printf("\tMaticni broj: %d\n", temp->MatBroj);
-			temp = temp->next;
+
 		}
 	}
 
