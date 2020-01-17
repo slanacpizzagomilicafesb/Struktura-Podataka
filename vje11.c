@@ -14,18 +14,18 @@ struct hashT;
 typedef struct hashT *hashTab;
 
 struct cvorListe {
-	char* Ime;
-	char* prezime;
+	char Ime[MAX_STR_LEN];
+	char prezime[MAX_STR_LEN];
 	int MatBroj;
 	Pozicija next;
 };
 
 struct hashT {
 	int velTab;
-	Lista *hashListe;
+	Lista hashListe[11];
 };
 
-int Unos(Pozicija);
+int Unos(Pozicija, int);
 hashTab InitTab(int velTab);
 int Hash1(Pozicija, int);
 int UnosUTab(Pozicija, int, hashTab);
@@ -33,12 +33,34 @@ int Ispis(hashTab);
 
 int main()
 {
-	int broj = 0, kljuc = 0;
-	Pozicija* Element;
+	int broj = 0, kljuc = 0, i = 0, velTab = 0;
+	Pozicija Element;
+	hashTab Tab = NULL;
 
+	printf("Velicina tablice: ");
+	scanf("%d", &velTab);
 
+	Tab = InitTab(velTab);
 
-	Element = (Pozicija*)malloc(sizeof(struct cvorListe)*broj);
+	printf("Koliko clanova zelite unijet: ");
+	scanf("%d", &broj);
+
+	
+	for (i = 0; i < broj; i++)
+	{
+		Element = (Pozicija)malloc(sizeof(struct cvorListe));
+		if (Element == NULL)
+		{
+			printf("greska pri alokacije elementa.");
+			return 1;
+		}
+
+		Unos(Element, i);
+		kljuc = Hash1(Element, velTab);
+		UnosUTab(Element, kljuc, Tab);
+	}
+
+	Ispis(Tab);
 
 	return 0;
 }
@@ -50,8 +72,13 @@ hashTab InitTab(int velTab)
 
 	Tablica = (hashTab)malloc(sizeof(struct hashT));
 
+	if (Tablica == NULL)
+	{
+		printf("Greska pri alokaciji tablice.");
+		return NULL;
+	}
+
 	Tablica->velTab = velTab;
-	Tablica->hashListe = (Lista*)malloc(sizeof(Lista)*Tablica->velTab);
 
 	for (i = 0; i < Tablica->velTab; i++)
 	{
@@ -61,25 +88,24 @@ hashTab InitTab(int velTab)
 	return Tablica;
 }
 
-int Unos(Pozicija P)
+int Unos(Pozicija P, int i)
 {
 	int maticniBroj = 0;
-	char *ime, *prezime;
+	char ime[MAX_STR_LEN], prezime[MAX_STR_LEN];
 
-	ime = (char*)malloc(sizeof(char)*MAX_STR_LEN);
-	prezime = (char*)malloc(sizeof(char)*MAX_STR_LEN);
-
-	printf("Unesite ime osobe: ");
+	printf("Unesite ime %d. osobe: ", i+1);
 	scanf("%s", ime);
-	P->Ime = (char*)malloc(sizeof(char)*strlen(ime));
-	P->Ime = ime;
-	printf("Unesite prezime osobe: ");
+	strcpy(P->Ime, ime);
+
+	printf("Unesite prezime %d. osobe: ", i+1);
 	scanf("%s", prezime);
-	P->prezime = (char*)malloc(sizeof(char)*strlen(prezime));
-	P->prezime = prezime;
-	printf("Unesite maticni broj osobe: ");
-	scanf("&d", &maticniBroj);
+	strcpy(P->prezime, prezime);
+
+	printf("Unesite maticni broj %d. osobe: ", i+1);
+	scanf("%d", &maticniBroj);
 	P->MatBroj = maticniBroj;
+
+	printf("\n");
 
 	return 0;
 }
@@ -160,16 +186,10 @@ int Ispis(hashTab Tab)
 		{
 			printf("\tIme: %s\n", temp->Ime);
 			printf("\tPrezime: %s\n", temp->prezime);
-			printf("\tZelite li ispisat maticni broj?\n\t\t1.Da\n\t\t2.Ne\n");
+			printf("\tZelite li ispisat maticni broj?\n\t1.Da\n\t2.Ne\n\t");
 			scanf("%d", &matBr);
-			switch (matBr)
-			{
-			case 1:
+			if (matBr == 1)
 				printf("\tMaticni broj: %d\n", temp->MatBroj);
-				break;
-			default:
-				break;
-			}
 			temp = temp->next;
 		}
 	}
