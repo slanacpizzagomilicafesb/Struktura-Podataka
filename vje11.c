@@ -54,6 +54,7 @@ int main()
 			printf("greska pri alokacije elementa.");
 			return 1;
 		}
+		Element->next = NULL;
 
 		Unos(Element, i);
 		kljuc = Hash1(Element, velTab);
