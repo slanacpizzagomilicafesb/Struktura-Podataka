@@ -29,6 +29,7 @@ int Unos(Pozicija);
 hashTab InitTab(int velTab);
 int Hash1(Pozicija, int);
 int UnosUTab(Pozicija, int, hashTab);
+int Ispis(hashTab);
 
 int main()
 {
@@ -70,9 +71,11 @@ int Unos(Pozicija P)
 
 	printf("Unesite ime osobe: ");
 	scanf("%s", ime);
+	P->Ime = (char*)malloc(sizeof(char)*strlen(ime));
 	P->Ime = ime;
 	printf("Unesite prezime osobe: ");
 	scanf("%s", prezime);
+	P->prezime = (char*)malloc(sizeof(char)*strlen(prezime));
 	P->prezime = prezime;
 	printf("Unesite maticni broj osobe: ");
 	scanf("&d", &maticniBroj);
@@ -93,19 +96,83 @@ int Hash1(Pozicija P, int velTab)
 
 int UnosUTab(Pozicija P, int kljuc, hashTab Tab)
 {
+	Lista temp1 = NULL, temp2 = NULL;
+	temp1 = Tab->hashListe[kljuc];
 	if (Tab->hashListe[kljuc] == NULL)
-		Tab->hashListe[kljuc] = P;
-	else
 	{
-		if (strcmp(P->prezime, Tab->hashListe[kljuc]->prezime) < 0)
-		{
-			P->next = Tab->hashListe[kljuc];
-			Tab->hashListe[kljuc] = P;
-		}
-		else if (strcmp(P->prezime, Tab->hashListe[kljuc]->prezime))
-		{
+		Tab->hashListe[kljuc] = P;
+		return 0;
+	}
 
+	if (strcmp(P->prezime, temp1->prezime) < 0)
+	{
+		P->next = temp1;
+		temp1 = P;
+		return 0;
+	}
+
+	temp2 = temp1->next;
+	while (temp2 != NULL)
+	{
+		if (strcmp(P->prezime, temp2->prezime) < 0)
+		{
+			P->next = temp2;
+			temp1->next = P;
+			return 0;
+		}
+		else if(strcmp(P->prezime, temp2->prezime) > 0)
+		{
+			temp2 = temp2->next;
+			temp1 = temp1->next;
+		}
+		else
+		{
+			while (temp2 != NULL)
+			{
+				if (strcmp(P->Ime, temp2->Ime) <= 0)
+				{
+					P->next = temp2;
+					temp1->next = P;
+					return 0;
+				}
+				else
+				{
+					temp2 = temp2->next;
+					temp1 = temp1->next;
+				}
+			}
 		}
 	}
+	temp1->next = P;
+	return 0;
+}
+
+int Ispis(hashTab Tab)
+{
+	int i = 0, matBr = 0;
+	Lista temp = NULL;
+
+	for (i = 0; i < Tab->velTab; i++)
+	{
+		temp = Tab->hashListe[i];
+		printf("Kljuc: %d\n", i);
+		while (temp != NULL)
+		{
+			printf("\tIme: %s\n", temp->Ime);
+			printf("\tPrezime: %s\n", temp->prezime);
+			printf("\tZelite li ispisat maticni broj?\n\t\t1.Da\n\t\t2.Ne\n");
+			scanf("%d", &matBr);
+			switch (matBr)
+			{
+			case 1:
+				printf("\tMaticni broj: %d\n", temp->MatBroj);
+				break;
+			default:
+				break;
+			}
+			temp = temp->next;
+		}
+	}
+
 	return 0;
 }
